@@ -1,0 +1,18 @@
+import RPi.GPIO as GOG
+import sys
+from time import sleep
+dac = [26,19,13,6,5,11,9,10]
+GOG.setmode(GOG.BCM)
+GOG.setup(2, GOG.OUT)
+GOG.setup(dac, GOG.OUT, initial = GOG.HIGH)
+pop = GOG.PWM(2, 1000)
+pop.start(0)
+try:
+    while(True):
+        cycle = int(input())
+        pop.ChangeDutyCycle(cycle)
+        print("{:.2f}".format(cycle*3/1000))
+finally:
+    GOG.output(dac, 0)
+    GOG.output(2, 0)
+    GOG.cleanup()  
