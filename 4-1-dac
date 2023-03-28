@@ -1,0 +1,30 @@
+import RPi.GPIO as GOG
+import sys
+dac = [26,19,13,6,5,11,9,10]
+GOG.setmode(GOG.BCM)
+GOG.setup(dac, GOG.OUT)
+def bib(bi,d):
+    return [int (i) for i in bin(bi) [2:].zfill(d)]
+try:
+    while(True):
+        bi = input("Введите число от 0 до 255")
+        if bi == "q":
+            sys.exit()
+        elif bi.isdigit() and int(bi) % 1 == 0 and 0 <= int(bi) <= 255:
+            GOG.output(dac, bib(int(bi), 8))
+            print("{:.4f}".format(int(bi)/256*3.3))
+        elif not bi.isdigit():
+            print("Введено не число, Введите число от 0 до 255")
+        elif int(bi) % 1 != 0:
+            print("Введено не целое число, Введите число от 0 до 255")
+        elif not 0 <= int(bi) <= 255:
+            print("Введено число не из данного диапозона, Введите число от 0 до 255") 
+        elif int(bi) < 0:
+            print("Введено отрицательное число, Введите число от 0 до 255")     
+        else: 
+            print("Введено не то значение, Введите число от 0 до 255")   
+except ValueError:
+    print("Введено не то значение, Введите число от 0 до 255")
+finally:
+    GOG.output(dac, 0)
+    GOG.cleanup() 
