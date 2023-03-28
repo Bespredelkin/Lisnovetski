@@ -1,0 +1,28 @@
+import RPi.GPIO as GOG
+import sys
+from time import sleep
+dac = [26,19,13,6,5,11,9,10]
+GOG.setmode(GOG.BCM)
+GOG.setup(dac, GOG.OUT)
+def bib(bi,d):
+    return [int (i) for i in bin(bi) [2:].zfill(d)]
+try:
+    while(True):
+        a = input("Введите число ")
+        if not a.isdigit():
+            print("")
+        else:
+            tr = int(a)
+            tr = tr/512
+            for i in range(256):
+                GOG.output(dac, bib(i, 8))
+                sleep(tr)
+            for i in range(255, -1, -1):
+                GOG.output(dac, bib(i, 8))
+                sleep(tr)     
+        
+except ValueError:
+    print()         
+finally:
+     GOG.output(dac, 1)
+     GOG.cleanup()
